@@ -1,14 +1,11 @@
-import { Router, Request, Response } from 'express';
+import { Router } from 'express';
 
-import { getTasks, saveTask } from './controller/TasksController';
+import { saveCidade, getCidade, getCidadeEstado } from './controller/CidadesController';
 
 const routes = Router()
 
-routes.get('/', (request: Request, response: Response) => {
-    return response.json({ message: 'Hello World' });
-});
-
-routes.get('/tasks', getTasks)
-routes.post('/tasks', saveTask)
+routes.post('/cidades', saveCidade)
+routes.get('/cidade/nome', getCidade)
+routes.get('/cidade/estado', getCidadeEstado)
 
 export default routes;
