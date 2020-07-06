@@ -4,8 +4,21 @@ import { Request, Response } from 'express'
 
 export const saveCliente = async (request: Request, response: Response) => {
     try{
-        const cliente = await getRepository(Cliente).save(request.body);
-        return response.json(cliente);
+        const data = request.body.dataNascimento;
+        const dia = data.split("/")[0];
+        const mes = data.split("/")[1];
+        const ano = data.split("/")[2];
+        const dataAmericana = ano + '/' + ("0"+mes).slice(-2) + '/' + ("0"+dia).slice(-2);
+        const cliente = {
+            nomeCompleto: request.body.nomeCompleto,
+            sexo: request.body.sexo,
+            dataNascimento: dataAmericana,
+            idade: request.body.idade,
+            cidade: request.body.cidade
+        }
+        const clienteSalvo = await getRepository(Cliente).save(cliente);
+        clienteSalvo.dataNascimento = request.body.dataNascimento;
+        return response.json(clienteSalvo);
     }catch{
         return response.status(500).json({ message: 'Erro ao cadastrar' })
     }
